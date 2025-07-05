@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chroma Craft - パレットスタジオ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header class="app-header">
+            <h1>🎨 Chroma Craft</h1>
+            <p>直感的な操作で、あなただけのカラーパレットを創造しよう。</p>
+        </header>
+
+        <!-- Step 1: 色の選択 -->
+        <section class="card">
+            <h2 class="card-title">STEP 1: 色を選ぶ</h2>
+            <div class="card-content columns">
+                <!-- 左カラム: 手動選択 -->
+                <div class="column">
+                    <h3>手動で選択</h3>
+                    <div class="custom-color-picker">
+                        <div id="color-plane">
+                            <div id="plane-cursor"></div>
+                        </div>
+                        <div class="color-controls">
+                            <input type="range" id="hue-slider" min="0" max="360" value="0" class="hue-slider">
+                            <div class="color-preview-group">
+                                 <div id="color-preview"></div>
+                                 <input type="text" id="hex-input" maxlength="7" placeholder="#FFFFFF">
+                            </div>
+                        </div>
+                        <!-- ▼▼▼ RGB入力欄を追加 ▼▼▼ -->
+                        <div class="rgb-inputs">
+                            <div class="rgb-input-group">
+                                <label for="rgb-r">R</label>
+                                <input type="number" id="rgb-r" min="0" max="255">
+                            </div>
+                            <div class="rgb-input-group">
+                                <label for="rgb-g">G</label>
+                                <input type="number" id="rgb-g" min="0" max="255">
+                            </div>
+                            <div class="rgb-input-group">
+                                <label for="rgb-b">B</label>
+                                <input type="number" id="rgb-b" min="0" max="255">
+                            </div>
+                        </div>
+                        <!-- ▲▲▲ ここまで追加 ▲▲▲ -->
+                    </div>
+                     <div class="button-group">
+                        <button id="add-color-btn" class="btn btn-primary">色を追加</button>
+                        <button id="eyedropper-btn" class="btn btn-secondary">💧 スポイト</button>
+                    </div>
+                </div>
+                <!-- 右カラム: 画像から抽出 -->
+                <div class="column">
+                    <h3>画像から抽出(β版)</h3>
+                    <div class="image-extractor">
+                        <label for="image-upload-input" class="file-upload-label">画像ファイルをアップロード</label>
+                        <input type="file" id="image-upload-input" class="file-input" accept="image/*">
+                        <div id="image-preview-container">
+                            <p>ここに画像をドラッグ＆ドロップ<br>またはクリックして選択</p>
+                        </div>
+                        <div id="extracted-colors-container"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 2: パレットの組み立て -->
+        <section class="card">
+            <h2 class="card-title">STEP 2: パレットを組み立てる</h2>
+            <div class="card-content">
+                <h3>現在作成中のパレット</h3>
+                <div id="current-colors" class="current-colors-display">
+                    <p class="placeholder-text">STEP 1 で色を追加してください</p>
+                </div>
+                <div class="palette-info-form">
+                    <div class="form-group">
+                        <label for="palette-name">パレット名</label>
+                        <input type="text" id="palette-name" placeholder="例: 夏の海岸線">
+                    </div>
+                    <div class="form-group">
+                        <label for="palette-type">パレットの種類</label>
+                        <select id="palette-type">
+                            <option value="regular">カテゴリーカラーパレット (Regular)</option>
+                            <option value="ordered-sequential">連続カラーパレット (Sequential)</option>
+                            <option value="ordered-diverging">分岐カラーパレット (Diverging)</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="create-palette-btn" class="btn btn-success btn-full">パレットをリストに追加</button>
+            </div>
+        </section>
+
+        <!-- Step 3: パレットの管理と出力 -->
+        <section class="card">
+            <h2 class="card-title">STEP 3: 管理と出力</h2>
+            <div class="card-content columns">
+                <!-- 左カラム: 作成済みリスト -->
+                <div class="column">
+                    <h3>作成済みパレットリスト</h3>
+                    <p class="description-text">リストの項目をクリックすると編集できます。<br>TPS読込から現在お使いのカスタムカラーパレットを編集できます。</p>
+                    <ul id="created-palettes-list">
+                        <!-- JSで生成 -->
+                    </ul>
+                    <div class="button-group">
+                        <button id="clear-all-btn" class="btn btn-danger">全リセット</button>
+                        <label for="xml-upload-input" class="btn btn-secondary">TPS読込</label>
+                        <input type="file" id="xml-upload-input" class="file-input" accept=".tps, .xml">
+                    </div>
+                </div>
+                <!-- 右カラム: 出力 -->
+                <div class="column">
+                    <h3>TPS (XML) 出力</h3>
+                     <p class="description-text">Tableau用の設定ファイルです。</p>
+                    <textarea id="output-xml" readonly rows="10" placeholder="ここにXMLが生成されます..."></textarea>
+                    <div class="button-group vertical">
+                        <button id="copy-btn" class="btn btn-secondary">📋 クリップボードにコピー</button>
+                        <button id="download-xml-btn" class="btn btn-secondary">💾 TPSファイルをダウンロード</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script src="script.js"></script>
+
+    <footer class="app-footer">
+        <p>お問い合わせ・フィードバックは<a href="https://x.com/arcle_21" target="_blank" rel="noopener noreferrer">開発者X(Twitter)</a>まで</p>
+    </footer>
+</body>
+</html>
