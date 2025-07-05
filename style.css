@@ -328,3 +328,51 @@ input[type="text"]:focus, select:focus, input[type="number"]:focus {
     .app-header h1 { font-size: 2rem; }
     .button-group { flex-direction: column; }
 }
+.app-footer {
+    max-width: 1100px;
+    margin: 40px auto 0;
+    padding: 20px;
+    text-align: center;
+    color: var(--color-text-secondary);
+}
+.disclaimer {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+    text-align: left;
+}
+.disclaimer summary {
+    padding: 15px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.2s;
+}
+.disclaimer summary:hover {
+    background-color: #fafbff;
+}
+.disclaimer-content {
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--color-border);
+}
+.disclaimer-content h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+.disclaimer-content p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 0 0 10px;
+}
+.disclaimer-content .last-updated {
+    font-size: 0.8rem;
+    color: #a0aec0;
+    margin-top: 20px;
+}
+.copyright {
+    font-size: 0.9rem;
+}
